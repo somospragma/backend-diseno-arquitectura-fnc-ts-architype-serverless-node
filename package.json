@@ -1,0 +1,36 @@
+{
+    "name": "mercantil-hexagonal-archetype-node",
+    "version": "1.0.0",
+    "description": "Arquetipo base para proyectos en Node utilizando Arquitectura Hexagonal con ORM",
+    "main": "src/index.ts",
+    "scripts": {
+        "test": "npx jest",
+        "build": "tsc && tsc-alias",
+        "start": "node dist/index.js",
+        "dev": "ts-node-dev --respawn -r tsconfig-paths/register src/index.ts",
+        "typeorm": "typeorm",
+        "migration:generate": "typeorm migration:generate -d dist/infrastructure/configuration/AppConfig.js",
+        "migration:run": "typeorm migration:run -d dist/infrastructure/configuration/AppConfig.js",
+        "migration:revert": "typeorm migration:revert -d dist/infrastructure/configuration/AppConfig.js"
+    },
+    "dependencies": {
+        "class-transformer": "^0.5.1",
+        "class-validator": "^0.14.1",
+        "express": "^4.21.2",
+        "pg": "^8.13.1",
+        "reflect-metadata": "^0.2.2",
+        "tsconfig-paths": "^4.2.0",
+        "typeorm": "^0.3.20"
+    },
+    "devDependencies": {
+        "@types/express": "^5.0.0",
+        "@types/jest": "^29.5.14",
+        "@types/node": "^22.10.7",
+        "eslint": "^9.18.0",
+        "jest": "^29.7.0",
+        "ts-jest": "^29.2.5",
+        "ts-node-dev": "^2.0.0",
+        "tsc-alias": "^1.8.10",
+        "typescript": "^5.7.3"
+    }
+}
