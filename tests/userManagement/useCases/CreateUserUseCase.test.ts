@@ -31,8 +31,9 @@ describe('CreateUserUseCase', () => {
 
     const result = await createUserUseCase.execute(createUserDto);
 
-    expect(result.data.id).toBe(1);
-    expect(result.data.fullName).toBe(`${body.firstName} ${body.lastName}` );
+    expect(result.id).toBe(1);
+    expect(result.firstName).toBe(body.firstName);
+    expect(result.lastName).toBe(body.lastName)
   });
 
 
