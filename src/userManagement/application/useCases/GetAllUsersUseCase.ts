@@ -13,17 +13,12 @@ export class GetAllUsersUseCase {
    * @return {*}  {Promise<{ data: PaginationResponseDto<any>; message: string }>}
    * @memberof GetAllUsersUseCase
    */
-  async execute(paginationDto: PaginationRequestDto): Promise<{ data: PaginationResponseDto<any>; message: string }> {
+  async execute(paginationDto: PaginationRequestDto): Promise<PaginationResponseDto<any>> {
     const { page, limit } = paginationDto;
-
     const offset = (page - 1) * limit;
-
     const users = await this.userService.findAll({ offset, limit });
     const totalItems = await this.userService.count();
-
-    const response = new PaginationResponseDto(users, page, totalItems, limit);
-
-    return new ApiResponse(response, 'Users fetched successfully')
+    return new PaginationResponseDto(users, page, totalItems, limit);
     };
 }
 

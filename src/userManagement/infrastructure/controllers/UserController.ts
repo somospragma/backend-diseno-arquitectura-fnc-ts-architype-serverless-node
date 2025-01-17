@@ -1,4 +1,5 @@
 import { Request, Response, Router } from 'express';
+import { plainToInstance } from 'class-transformer';
 import { UserService } from '@userManagement/domain/services/UserService';
 import { UserDataProvider } from '@userManagement/infrastructure/dataProviders/userData/userDataProvider';
 import { GetUserUseCase } from '@userManagement/application/useCases/GetUserUseCase';
@@ -11,7 +12,8 @@ import { CreateUserDto } from '@userManagement/application/dto/request/CreateUse
 import { UpdateUserDto } from '@userManagement/application/dto/request/UpdateUserDto';
 import { PaginationRequestDto } from '@crosscutting/dto/request/PaginationRequestDto';
 import { handleErrors } from '@crosscutting/middleware/ErrorHandlingMiddleware';
-import { plainToInstance } from 'class-transformer';
+import { UserMapper } from '@userManagement/application/mappers/UserMapper';
+import { ApiResponse } from '@crosscutting/dto/response/ApiResponse';
 
 
 const userRepository = new UserDataProvider();
@@ -27,20 +29,40 @@ export const UserController = Router();
 
 UserController.get('/users', async (req: Request, res: Response) => {
   const paginationDto = new PaginationRequestDto(req.query);
-  await handleErrors(() => getAllUsersUseCase.execute(paginationDto), res);
+  await handleErrors(
+    async () => {
+      const response = await getAllUsersUseCase.execute(paginationDto);
+      return new ApiResponse(response, 'Users fetched successfully')
+    },
+    res
+  );
 });
 
 UserController.get('/users/:id', async (req: Request, res: Response) => {
   const userId = parseInt(req.params.id, 10);
-  await handleErrors(() => getUserUseCase.execute(userId), res);
+  await handleErrors(
+    async () => {
+      const response = await getUserUseCase.execute(userId);
+      const userDto = UserMapper.toDto(response);
+      return new ApiResponse(userDto, 'User retrieved successfully');
+    },
+    res
+  );
 });
 
 UserController.post(
   '/users',
   validateInput(CreateUserDto),
-  async (req: Request, res: Response) => {    
+  async (req: Request, res: Response) => {
     const createUserDto = plainToInstance(CreateUserDto, req.body);
-    await handleErrors(() => createUserUseCase.execute(createUserDto), res);
+    await handleErrors(
+      async () => {
+        const response = await createUserUseCase.execute(createUserDto);
+        const createdUserDto = UserMapper.toDto(response);
+        return new ApiResponse(createdUserDto, 'User created successfully', 201);       
+      },
+      res
+    );
   }
 );
 
@@ -50,11 +72,23 @@ UserController.patch(
   async (req: Request, res: Response) => {
     const userId = parseInt(req.params.id, 10);
     const updateUserDto = plainToInstance(UpdateUserDto, req.body);
-    await handleErrors(() => updateUserUseCase.execute(userId, updateUserDto), res);
+    await handleErrors(
+      async () => {
+        const response = await updateUserUseCase.execute(userId, updateUserDto);
+        return new ApiResponse(response, 'Usuario actualizado con éxito.');
+      },
+      res
+    );
   }
 );
 
 UserController.delete('/users/:id', async (req: Request, res: Response) => {
   const userId = parseInt(req.params.id, 10);
-  await handleErrors(() => deleteUserUseCase.execute(userId), res);
+  await handleErrors(
+    async () => {
+      await deleteUserUseCase.execute(userId);
+      return new ApiResponse(null, 'User created successfully', 204);       
+    },
+    res
+  );
 });

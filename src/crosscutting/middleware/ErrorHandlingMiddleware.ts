@@ -5,7 +5,7 @@ import { ResponseUtils } from '@crosscutting/utils/ResponseUtils';
 
 export const handleErrors = async (action: () => Promise<any>, res: Response): Promise<void> => {
   try {
-    const response = await action();
+    const response = await action();    
     ResponseUtils.success(res, response.data, response.message, response.code);
   } catch (error: unknown) {
     if (error instanceof ErrorResponse) {

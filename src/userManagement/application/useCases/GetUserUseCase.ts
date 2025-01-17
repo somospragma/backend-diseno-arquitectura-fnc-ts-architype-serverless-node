@@ -1,6 +1,7 @@
 import { UserService } from '@userManagement/domain/services/UserService';
 import { UserMapper } from '@userManagement/application/mappers/UserMapper';
 import { ApiResponse } from '@crosscutting/dto/response/ApiResponse';
+import { User } from '@userManagement/domain/models/User';
 
 export class GetUserUseCase {
   private userService: UserService;
@@ -14,9 +15,7 @@ export class GetUserUseCase {
    * @param userId ID del usuario.
    * @returns Respuesta estandarizada con el usuario encontrado.
    */
-  async execute(userId: number): Promise<ApiResponse<any>> {
-    const user = await this.userService.getUserById(userId);
-    const userDto = UserMapper.toDto(user);
-    return new ApiResponse(userDto, 'User retrieved successfully');
+  async execute(userId: number): Promise<User> {
+    return await this.userService.getUserById(userId);
   }
 }

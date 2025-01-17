@@ -18,12 +18,10 @@ export class UpdateUserUseCase {
    * @return {*}  {Promise<ApiResponse<any>>}
    * @memberof UpdateUserUseCase
    */
-  async execute(userId: number, userDto: UpdateUserDto): Promise<ApiResponse<any>> {
+  async execute(userId: number, userDto: UpdateUserDto): Promise<User> {
   
-    const updatedUser = await this.userService.updateUser(
+    return await this.userService.updateUser(
       new User(userId, userDto.firstName, userDto.lastName), 
     );
-
-    return new ApiResponse(updatedUser, 'Usuario actualizado con éxito.');
   }
 }

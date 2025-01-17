@@ -12,10 +12,8 @@ export class CreateUserUseCase {
   }
 
  
-  async execute(userDto: CreateUserDto): Promise<ApiResponse<any>> {
+  async execute(userDto: CreateUserDto): Promise<User> {
     const user = new User(0, userDto.firstName, userDto.lastName); 
-    const createdUser = await this.userService.createUser(user);
-    const createdUserDto = UserMapper.toDto(createdUser);
-    return new ApiResponse(createdUserDto, 'User created successfully', 201);
+    return await this.userService.createUser(user);
   }
 }

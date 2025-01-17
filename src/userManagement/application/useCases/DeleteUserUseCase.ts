@@ -13,8 +13,8 @@ export class DeleteUserUseCase {
    * @param userId ID del usuario a eliminar.
    * @returns Respuesta estandarizada confirmando la eliminación.
    */
-  async execute(userId: number): Promise<ApiResponse<any>> {
-    await this.userService.deleteUser(userId);
-    return new ApiResponse(null, 'User deleted successfully', 204);
+  async execute(userId: number): Promise<any> {
+    return this.userService.deleteUser(userId);
+    //return new ApiResponse(null, 'User deleted successfully', 204);
   }
 }
