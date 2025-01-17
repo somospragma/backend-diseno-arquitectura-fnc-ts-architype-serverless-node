@@ -1,6 +1,4 @@
 import { UserService } from '@userManagement/domain/services/UserService';
-import { UserMapper } from '@userManagement/application/mappers/UserMapper';
-import { ApiResponse } from '@crosscutting/dto/response/ApiResponse';
 import { User } from '@userManagement/domain/models/User';
 
 export class GetUserUseCase {
