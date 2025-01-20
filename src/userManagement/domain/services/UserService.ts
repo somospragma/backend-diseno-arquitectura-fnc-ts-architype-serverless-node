@@ -36,13 +36,34 @@ export class UserService {
     return await this.userRepository.create(user);
   }
 
-  private async validate_age(birthDate: string){
-    const minAge = await this.parameterRestClient.getParameter('min_age');
-    const maxAge = await this.parameterRestClient.getParameter('max_age');
-    console.log(birthDate);
-    
-    console.log(minAge,maxAge);
+  private async validate_age(birthDate: string): Promise<void> {
+    const minAgeResponse = await this.parameterRestClient.getParameter('min_age');
+    const maxAgeResponse = await this.parameterRestClient.getParameter('max_age');
+
+    const minAge = parseInt(minAgeResponse.data.value)
+    const maxAge = parseInt(maxAgeResponse.data.value)
+
+    const birthDateObject = new Date(birthDate);
+    const today = new Date();
+  
+    let age = today.getFullYear() - birthDateObject.getFullYear();
+    const isBeforeBirthdayThisYear =
+      today.getMonth() < birthDateObject.getMonth() ||
+      (today.getMonth() === birthDateObject.getMonth() && today.getDate() < birthDateObject.getDate());
+  
+    if (isBeforeBirthdayThisYear) {
+      age--;
+    }
+
+    if (age < minAge) {
+      throw new ErrorResponse(`La edad mínima permitida es ${minAge} años. La edad calculada es ${age} años.`, 404);
+    }
+  
+    if (age > maxAge) {
+      throw new ErrorResponse(`La edad máxima permitida es ${maxAge} años. La edad calculada es ${age} años.`, 404);
+    }
   }
+  
 
 
   async updateUser(user: User): Promise<User> {

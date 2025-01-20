@@ -1,6 +1,7 @@
 import { ApiResponse } from '@crosscutting/dto/response/ApiResponse';
 import { HttpClient } from '@crosscutting/http';
 import { ParameterRepositoryPort } from '@userManagement/domain/ports/out/ParameterRepositoryPort';
+import { ParameterResponseDTO } from '../response/ParameterResponseDTO';
 
 export class ParameterRestClient implements ParameterRepositoryPort {
     private readonly httpClient: HttpClient;
@@ -9,7 +10,7 @@ export class ParameterRestClient implements ParameterRepositoryPort {
       this.httpClient = httpClient;
     }
   
-    async getParameter(key: string): Promise<ApiResponse<any>> {
+    async getParameter(key: string): Promise<ApiResponse<ParameterResponseDTO>> {
       const response = await this.httpClient.request<any>({
         url: `/parameters/${key}`,
         method: 'GET',
