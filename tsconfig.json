@@ -9,6 +9,7 @@
       "baseUrl": "./src",
       "paths": {
           "@userManagement/*": ["userManagement/*"],
+          "@parameterManagement/*": ["parameterManagement/*"],
           "@crosscutting/*": ["crosscutting/*"]
       },
       "outDir": "./dist",

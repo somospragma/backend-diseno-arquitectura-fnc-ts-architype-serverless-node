@@ -5,7 +5,7 @@ export class ResponseUtils {
     res.status(code).json({ data, message, code });
   }
 
-  static error(res: Response, message: string, statusCode = 500): void {
-    res.status(statusCode).json({ message, code:statusCode });
+  static error(res: Response, message: string, statusCode = 500, error:any = null): void {
+    res.status(statusCode).json({ message, code:statusCode, error });
   }
 }

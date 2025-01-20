@@ -1,5 +1,4 @@
 import { UserService } from '@userManagement/domain/services/UserService';
-import { ApiResponse } from '@crosscutting/dto/response/ApiResponse';
 import { PaginationRequestDto } from '@crosscutting/dto/request/PaginationRequestDto';
 import { PaginationResponseDto } from '@crosscutting/dto/response/PaginationResponseDto';
 

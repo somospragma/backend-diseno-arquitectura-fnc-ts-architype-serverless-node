@@ -1,15 +1,14 @@
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 import { Request, Response, NextFunction } from 'express';
+import { ResponseUtils } from '@crosscutting/utils/ResponseUtils';
 
 
 export const validateInput = (dto: any) => {
   return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       if (!req.body || Object.keys(req.body).length === 0) {
-        res.status(400).json({
-          message: 'El cuerpo de la solicitud está vacío.',
-        });
+        ResponseUtils.error(res, 'El cuerpo de la solicitud está vacío.', 400)
         return;
       }
 
@@ -21,10 +20,7 @@ export const validateInput = (dto: any) => {
           field: error.property,
           errors: Object.values(error.constraints || {}),
         }));
-        res.status(400).json({
-          message: 'Datos de entrada inválidos.',
-          errors: formattedErrors,
-        });
+        ResponseUtils.error(res, 'Datos de entrada inválidos.', 400, formattedErrors)
         return;
       }
 

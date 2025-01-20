@@ -1,5 +1,4 @@
 import { UserService } from '@userManagement/domain/services/UserService';
-import { ApiResponse } from '@crosscutting/dto/response/ApiResponse';
 import { User } from '@userManagement/domain/models/User';
 import { UpdateUserDto } from '@userManagement/application/dto/request/UpdateUserDto';
 

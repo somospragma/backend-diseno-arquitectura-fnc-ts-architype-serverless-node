@@ -1,5 +1,4 @@
 import { UserService } from '@userManagement/domain/services/UserService';
-import { ApiResponse } from '@crosscutting/dto/response/ApiResponse';
 
 export class DeleteUserUseCase {
   private userService: UserService;
@@ -15,6 +14,5 @@ export class DeleteUserUseCase {
    */
   async execute(userId: number): Promise<any> {
     return this.userService.deleteUser(userId);
-    //return new ApiResponse(null, 'User deleted successfully', 204);
   }
 }

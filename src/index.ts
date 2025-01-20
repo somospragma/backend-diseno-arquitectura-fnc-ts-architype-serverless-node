@@ -2,9 +2,15 @@ import 'reflect-metadata';
 import express from 'express';
 import { AppDataSource } from '@crosscutting/configuration/AppConfig';
 import { UserController } from '@userManagement/infrastructure/controllers/UserController';
+import { createRedisClient } from '@crosscutting/configuration/AppConfig';
+import { ParameterController } from '@parameterManagement/infrastructure/controllers/ParameterController';
 
 const app = express();
 app.use(express.json());
+
+
+// Inicializa el cliente Redis
+const redisClient = createRedisClient();
 
 // Inicializar TypeORM
 AppDataSource.initialize()
@@ -12,7 +18,7 @@ AppDataSource.initialize()
     console.log('Data Source has been initialized!');
 
     // Registrar rutas
-    app.use('/api', UserController);
+    app.use('/api', UserController, ParameterController(redisClient));
     app.use(express.json());
 
 
