@@ -9,9 +9,9 @@
         "start": "node dist/index.js",
         "dev": "ts-node-dev --respawn -r tsconfig-paths/register src/index.ts",
         "typeorm": "typeorm",
-        "migration:generate": "typeorm migration:generate -d dist/infrastructure/configuration/AppConfig.js",
-        "migration:run": "typeorm migration:run -d dist/infrastructure/configuration/AppConfig.js",
-        "migration:revert": "typeorm migration:revert -d dist/infrastructure/configuration/AppConfig.js"
+        "migration:generate": "typeorm migration:generate -d dist/crosscutting/configuration/AppConfig.js -o ./dist/migrations",
+        "migration:run": "typeorm migration:run -d dist/crosscutting/configuration/AppConfig.js",
+        "migration:revert": "typeorm migration:revert -d dist/crosscutting/configuration/AppConfig.js"
     },
     "dependencies": {
         "axios": "^1.7.9",

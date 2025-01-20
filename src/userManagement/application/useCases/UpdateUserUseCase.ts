@@ -20,7 +20,7 @@ export class UpdateUserUseCase {
   async execute(userId: number, userDto: UpdateUserDto): Promise<User> {
   
     return await this.userService.updateUser(
-      new User(userId, userDto.firstName, userDto.lastName), 
+      new User(userId, userDto.firstName, userDto.lastName, userDto.bithDate), 
     );
   }
 }

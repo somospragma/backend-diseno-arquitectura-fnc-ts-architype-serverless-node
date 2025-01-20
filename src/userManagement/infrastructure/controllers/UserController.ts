@@ -14,15 +14,23 @@ import { PaginationRequestDto } from '@crosscutting/dto/request/PaginationReques
 import { handleErrors } from '@crosscutting/middleware/ErrorHandlingMiddleware';
 import { UserMapper } from '@userManagement/application/mappers/UserMapper';
 import { ApiResponse } from '@crosscutting/dto/response/ApiResponse';
+import { AxiosHttpClient } from '@crosscutting/http';
+import { ParameterRestClient } from '@userManagement/infrastructure/dataProviders/restClients/implementation/parameterRestClient';
 
+// Inicializamos el cliente HTTP
+const httpClient = new AxiosHttpClient(process.env.PARAMETER_BASE_URL || 'http://localhost:3000/api');
+
+// Configuración de dependencias
+const parameterRepository = new ParameterRestClient(httpClient);
 
 const userRepository = new UserDataProvider();
-const userService = new UserService(userRepository);
+const userService = new UserService(userRepository, parameterRepository);
 const getUserUseCase = new GetUserUseCase(userService);
 const getAllUsersUseCase = new GetAllUsersUseCase(userService);
 const createUserUseCase = new CreateUserUseCase(userService);
 const updateUserUseCase = new UpdateUserUseCase(userService);
 const deleteUserUseCase = new DeleteUserUseCase(userService);
+
 
 export const UserController = Router();
 
@@ -88,6 +96,17 @@ UserController.delete('/users/:id', async (req: Request, res: Response) => {
     async () => {
       await deleteUserUseCase.execute(userId);
       return new ApiResponse(null, 'User created successfully', 204);       
+    },
+    res
+  );
+});
+
+UserController.get('/users', async (req: Request, res: Response) => {
+  const paginationDto = new PaginationRequestDto(req.query);
+  await handleErrors(
+    async () => {
+      const response = await getAllUsersUseCase.execute(paginationDto);
+      return new ApiResponse(response, 'Users fetched successfully')
     },
     res
   );

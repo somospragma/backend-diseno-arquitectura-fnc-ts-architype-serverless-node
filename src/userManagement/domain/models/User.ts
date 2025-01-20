@@ -12,9 +12,13 @@ export class User {
   @Column({ name: 'last_name', type: 'varchar', length: 100 })
   lastName!: string;
 
-  constructor(id:number, firstName: string, lastName: string) {
+  @Column({ name: 'birth_date', type: 'date'})
+  birthDate!: string;
+
+  constructor(id:number, firstName: string, lastName: string, birthDate: string) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
+    this.birthDate = birthDate;
   }
 }

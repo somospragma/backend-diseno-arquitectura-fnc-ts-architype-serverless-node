@@ -3,7 +3,7 @@ import { User } from '@userManagement/domain/models/User';
 import { CreateUserDto } from '@userManagement/application/dto/request/CreateUserDto';
 
 export class CreateUserUseCase {
-  private userService: UserService;
+  private readonly userService: UserService;
 
   constructor(userService: UserService) {
     this.userService = userService;
@@ -11,7 +11,7 @@ export class CreateUserUseCase {
 
  
   async execute(userDto: CreateUserDto): Promise<User> {
-    const user = new User(0, userDto.firstName, userDto.lastName); 
+    const user = new User(0, userDto.firstName, userDto.lastName, userDto.birthDate); 
     return await this.userService.createUser(user);
   }
 }

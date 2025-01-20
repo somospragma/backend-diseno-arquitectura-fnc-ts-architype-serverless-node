@@ -1,41 +1,66 @@
-import axios, { AxiosInstance } from 'axios';
-import { HttpClient, HttpRequest, HttpResponse } from './HttpClient';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { HttpClient, HttpRequest } from '@crosscutting/http';
+import { ApiResponse } from '@crosscutting/dto/response/ApiResponse';
+import { ErrorResponse } from '@crosscutting/dto/response/ErrorResponse';
+import { Logger } from '@crosscutting/logging/Logger';
 
 export class AxiosHttpClient implements HttpClient {
   private axiosInstance: AxiosInstance;
 
-  constructor(baseURL: string) {
+  constructor(baseURL: string, config: Partial<AxiosRequestConfig> = {}) {
     this.axiosInstance = axios.create({
       baseURL,
       timeout: 5000,
+      ...config,
     });
+    this.setupInterceptors();
   }
 
-  async request<T>(data: HttpRequest): Promise<HttpResponse<T>> {
+  async request<T>(data: HttpRequest): Promise<ApiResponse<T>> {
     const { url, method, headers, params, body } = data;
 
     try {
-      const response = await this.axiosInstance.request<T>({
+      const response: AxiosResponse<T> = await this.axiosInstance.request<T>({
         url,
         method,
         headers,
         params,
         data: body,
       });
-
-      return {
-        status: response.status,
-        data: response.data,
-      };
+      return new ApiResponse(response.data, 'Request successful', response.status)
     } catch (error: any) {
-      if (error.response) {
-        throw {
-          status: error.response.status,
-          data: error.response.data,
-        };
-      } else {
-        throw new Error(error.message);
+      if (axios.isAxiosError(error) && error.response) {
+        throw new ErrorResponse(
+          error.response.data.message || 'Request failed',
+          error.response.status,
+          error.response.data
+        );
       }
+
+      throw new ErrorResponse(error.message || 'Unknown error occurred');
     }
+  }
+
+  private setupInterceptors(): void {
+    this.axiosInstance.interceptors.request.use(
+      (config) => {
+        Logger.info(`[AxiosHttpClient] Request: ${config.method?.toUpperCase()} ${config.url}`);
+        return config;
+      },
+      (error) => {
+        Logger.error(`[AxiosHttpClient] Request Error: ${error.message}`);
+        return Promise.reject(error);
+      }
+    );
+    this.axiosInstance.interceptors.response.use(
+      (response) => {
+        Logger.info(`[AxiosHttpClient] Response: ${response.status} ${response.config.url}`);
+        return response;
+      },
+      (error) => {
+        Logger.error(`[AxiosHttpClient] Response Error: ${error.message}`);
+        return Promise.reject(error);
+      }
+    );
   }
 }

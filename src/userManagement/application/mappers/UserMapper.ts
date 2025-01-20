@@ -12,7 +12,7 @@ export class UserMapper {
    * @memberof UserMapper
    */
   static toDto(user: User): UserDtoResponse {
-    return new UserDtoResponse(user.id, `${user.firstName} ${user.lastName}`);
+    return new UserDtoResponse(user.id, `${user.firstName} ${user.lastName}`, user.birthDate);
   }
 
   
@@ -26,6 +26,6 @@ export class UserMapper {
    */
   static toEntity(userDto: UserDtoResponse): User {
     const [firstName, lastName] = userDto.fullName.split(' ');
-    return new User(userDto.id, firstName, lastName);
+    return new User(userDto.id, firstName, lastName, userDto.birthDate);
   }
 }

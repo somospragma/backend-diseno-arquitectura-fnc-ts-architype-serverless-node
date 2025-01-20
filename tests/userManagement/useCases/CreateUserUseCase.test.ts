@@ -25,7 +25,7 @@ describe('CreateUserUseCase', () => {
 
     const createUserDto = plainToInstance(CreateUserDto, body);
     
-    const mockUser = new User(1, 'John', 'Doe');
+    const mockUser = new User(1, 'John', 'Doe', '2001-15-06');
 
     userService.createUser.mockResolvedValueOnce(mockUser);
 

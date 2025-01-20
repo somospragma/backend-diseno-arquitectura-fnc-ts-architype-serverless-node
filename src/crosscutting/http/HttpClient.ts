@@ -1,3 +1,5 @@
+import { ApiResponse } from "@crosscutting/dto/response/ApiResponse";
+
 export interface HttpRequest {
     url: string;
     method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
@@ -6,12 +8,8 @@ export interface HttpRequest {
     body?: any;
   }
   
-  export interface HttpResponse<T = any> {
-    status: number;
-    data: T;
-  }
   
   export interface HttpClient {
-    request<T>(data: HttpRequest): Promise<HttpResponse<T>>;
+    request<T>(data: HttpRequest): Promise<ApiResponse<T>>;
   }
   
