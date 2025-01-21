@@ -4,18 +4,20 @@
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
+    "sourceMap": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "baseUrl": "./src",
+    "resolveJsonModule": true, // Permite trabajar con archivos JSON en TypeScript
+    "baseUrl": "./",
     "paths": {
-      "@userManagement/*": ["userManagement/*"],
-      "@parameterManagement/*": ["parameterManagement/*"],
-      "@crosscutting/*": ["crosscutting/*"]
+      "@userManagement/*": ["src/mercantil/arquetipo/userManagement/*"],
+      "@parameterManagement/*": ["src/mercantil/arquetipo/parameterManagement/*"],
+      "@crosscutting/*": ["src/mercantil/arquetipo/crosscutting/*"]
     },
     "outDir": "./dist",
     "rootDir": "./src",
     "skipLibCheck": true
   },
-  "include": ["src/**/*"], 
-  "exclude": ["node_modules", "dist", "tests"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

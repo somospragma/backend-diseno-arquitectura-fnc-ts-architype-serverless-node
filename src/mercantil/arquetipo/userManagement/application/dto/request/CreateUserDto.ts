@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, Length, Matches } from 'class-validator';
+import { IsString, IsNotEmpty, Length, IsDateString } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -13,8 +13,6 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty({ message: 'La fecha de nacimiento es obligatoria' })
-  @Matches(/^\d{4}-\d{2}-\d{2}$/, {
-    message: 'La fecha de nacimiento debe tener el formato YYYY-MM-DD.',
-  })
+  @IsDateString({}, { message: 'La fecha de nacimiento debe tener el formato YYYY-MM-DD.' })
   birthDate!: string;
 }

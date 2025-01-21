@@ -1,7 +1,7 @@
 import { ApiResponse } from '@crosscutting/dto/response/ApiResponse';
 import { HttpClient } from '@crosscutting/http';
 import { ParameterRepositoryPort } from '@userManagement/domain/ports/out/ParameterRepositoryPort';
-import { ParameterResponseDTO } from '../response/ParameterResponseDTO';
+import { ParameterResponseDTO } from '@userManagement/infrastructure/dataProviders/restClients/response/ParameterResponseDTO';
 
 export class ParameterRestClient implements ParameterRepositoryPort {
     private readonly httpClient: HttpClient;

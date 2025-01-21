@@ -1,4 +1,4 @@
-import { IsString, IsOptional, Length, Matches } from 'class-validator';
+import { IsString, IsOptional, Length, IsDateString } from 'class-validator';
 
 export class UpdateUserDto {
   @IsString()
@@ -13,8 +13,6 @@ export class UpdateUserDto {
 
   @IsString()
   @IsOptional()
-  @Matches(/^\d{4}-\d{2}-\d{2}$/, {
-    message: 'La fecha de nacimiento debe tener el formato YYYY-MM-DD.',
-  })
+  @IsDateString({}, { message: 'La fecha de nacimiento debe tener el formato YYYY-MM-DD.' })
   bithDate!: string;
 }

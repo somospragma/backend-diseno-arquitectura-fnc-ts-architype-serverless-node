@@ -15,7 +15,7 @@ import { handleErrors } from '@crosscutting/middleware/ErrorHandlingMiddleware';
 import { UserMapper } from '@userManagement/application/mappers/UserMapper';
 import { ApiResponse } from '@crosscutting/dto/response/ApiResponse';
 import { AxiosHttpClient } from '@crosscutting/http';
-import { ParameterRestClient } from '@userManagement/infrastructure/dataProviders/restClients/implementation/parameterRestClient';
+import { ParameterRestClient } from '@userManagement/infrastructure/dataProviders/restClients/implementation/ParameterRestClient';
 
 // Inicializamos el cliente HTTP
 const httpClient = new AxiosHttpClient(process.env.PARAMETER_BASE_URL || 'http://localhost:3000/api');

@@ -1,6 +1,10 @@
+// @ts-ignore
 import { CreateUserUseCase } from '@userManagement/application/useCases/CreateUserUseCase';
+// @ts-ignore
 import { UserService } from '@userManagement/domain/services/UserService';
+// @ts-ignore
 import { User } from '@userManagement/domain/models/User';
+// @ts-ignore
 import { CreateUserDto } from '@userManagement/application/dto/request/CreateUserDto';
 import { plainToInstance } from 'class-transformer';
 

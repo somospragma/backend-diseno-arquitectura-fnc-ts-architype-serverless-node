@@ -1,4 +1,6 @@
+// @ts-ignore
 import { ParameterService } from '@parameterManagement/domain/services/ParameterService';
+// @ts-ignore
 import { GetParameterUseCase } from '@parameterManagement/application/useCases/GetParameterUseCase';
 
 describe('GetParameterUseCase', () => {
