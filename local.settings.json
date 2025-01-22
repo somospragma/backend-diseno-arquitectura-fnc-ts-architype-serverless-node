@@ -4,8 +4,9 @@
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "node",
     "PARAMETER_BASE_URL": "http://localhost:3000/api",
-    "VALIDATION_TYPE": "ExampleValidation",
-    "FUNCTION_NAME": "ExampleFunction",
+    "VALIDATION_TYPE": "RN",
+    "FUNCTION_NAME_OBTAIN_PARAMETER": "ObtainParameterFunction",
+    "FUNCTION_CREATE_USER": "CreateUserFunction",
     "ENVIRONMENT": "Dev",
     "REGION": "US"
   }

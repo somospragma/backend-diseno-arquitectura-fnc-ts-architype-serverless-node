@@ -7,9 +7,10 @@ import { ParameterService } from '@parameterManagement/domain/services/Parameter
 import { GetParameterUseCase } from '@parameterManagement/application/useCases/GetParameterUseCase';
 import { createRedisClient } from '@crosscutting/configuration/AppConfig';
 import { ErrorResponse } from '@crosscutting/dto/response/ErrorResponse';
+import { Constants } from '@crosscutting/utils/Constants';
 
 // Nombre dinámico de la función
-const functionName = `NOVA-${process.env.VALIDATION_TYPE || 'DefaultValidation'}-${process.env.FUNCTION_NAME || 'CreateUser'}-${process.env.ENVIRONMENT || 'Dev'}-${process.env.REGION || 'US'}`;
+const functionName = `NOVA-${process.env.VALIDATION_TYPE}-${process.env.FUNCTION_NAME_OBTAIN_PARAMETER}-${process.env.ENVIRONMENT}-${process.env.REGION}`;
 
 async function handler(
   req: HttpRequest,
@@ -25,8 +26,7 @@ async function handler(
     if (!key) {
       return {
         status: 400,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(new ErrorResponse('Key is required', 400)),
+        body: JSON.stringify(new ErrorResponse(Constants.NOT_FOUND, 400)),
       };
     }
 
@@ -39,8 +39,7 @@ async function handler(
 
     return {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(new ApiResponse(parameterValue, `Parametro '${key}' obtenido`, 200)),
+      body: JSON.stringify(new ApiResponse(parameterValue, Constants.DATA_FOUND, 200)),
     };
   });
 }
