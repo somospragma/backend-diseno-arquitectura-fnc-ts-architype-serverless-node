@@ -8,7 +8,7 @@ export const validateInput = (dto: any) => {
   return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       if (!req.body || Object.keys(req.body).length === 0) {
-        ResponseUtils.error(res, 'El cuerpo de la solicitud está vacío.', 400)
+        ResponseUtils.httpRes(res, "ERROR", 'El cuerpo de la solicitud está vacío.', "Error", 400)
         return;
       }
 
@@ -20,7 +20,7 @@ export const validateInput = (dto: any) => {
           field: error.property,
           errors: Object.values(error.constraints || {}),
         }));
-        ResponseUtils.error(res, 'Datos de entrada inválidos.', 400, formattedErrors)
+        ResponseUtils.httpRes(res, "ERROR", formattedErrors, 'Datos de entrada inválidos.', 400)
         return;
       }
 

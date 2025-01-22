@@ -6,8 +6,9 @@
     "scripts": {
         "test": "npx jest",
         "build": "npm run test && tsc && tsc-alias",
-        "start": "npm run build && func start",
-        "dev": "ts-node-dev --respawn -r tsconfig-paths/register src/index.ts",
+        "start:function": "npm run build && func start",
+        "start:rest": "npm run build && node dist/indexRestApplication.js",
+        "dev": "ts-node-dev --respawn -r tsconfig-paths/register src/indexRestApplication.ts",
         "typeorm": "typeorm",
         "migration:generate": "typeorm migration:generate -d dist/crosscutting/configuration/AppConfig.js -o ./dist/migrations",
         "migration:run": "typeorm migration:run -d dist/crosscutting/configuration/AppConfig.js",

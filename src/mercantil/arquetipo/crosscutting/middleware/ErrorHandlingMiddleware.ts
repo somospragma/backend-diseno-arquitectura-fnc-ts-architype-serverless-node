@@ -6,14 +6,14 @@ import { ResponseUtils } from '@crosscutting/utils/ResponseUtils';
 export const handleErrors = async (action: () => Promise<any>, res: Response): Promise<void> => {
   try {
     const response = await action();    
-    ResponseUtils.success(res, response.data, response.message, response.code);
+    ResponseUtils.httpRes(res, "SUCCESS", response.data, response.message, response.statusCode, response.timestamp, response.transactionId);
   } catch (error: unknown) {
     if (error instanceof ErrorResponse) {
-      ResponseUtils.error(res, error.message, error.statusCode);
+      ResponseUtils.httpRes(res, "ERROR", error.message, "Error", error.statusCode);
     } else if (error instanceof Error) {
-      ResponseUtils.error(res, error.message, 500);
+      ResponseUtils.httpRes(res, "ERROR", error.message, "Error", 500);
     } else {
-      ResponseUtils.error(res, 'An unexpected error occurred', 500);
+      ResponseUtils.httpRes(res, "ERROR", 'An unexpected error occurred', "Error", 500);
     }
   }
 };
