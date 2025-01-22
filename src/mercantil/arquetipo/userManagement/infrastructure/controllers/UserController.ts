@@ -16,6 +16,7 @@ import { UserMapper } from '@userManagement/application/mappers/UserMapper';
 import { ApiResponse } from '@crosscutting/dto/response/ApiResponse';
 import { AxiosHttpClient } from '@crosscutting/http';
 import { ParameterRestClient } from '@userManagement/infrastructure/dataProviders/restClients/implementation/ParameterRestClient';
+import { Constants } from '@crosscutting/utils/Constants';
 
 // Inicializamos el cliente HTTP
 const httpClient = new AxiosHttpClient(process.env.PARAMETER_BASE_URL || 'http://localhost:3000/api');
@@ -40,7 +41,7 @@ UserController.get('/users', async (req: Request, res: Response) => {
   await handleErrors(
     async () => {
       const response = await getAllUsersUseCase.execute(paginationDto);
-      return new ApiResponse(response, 'Users fetched successfully')
+      return new ApiResponse(response, Constants.DATA_FOUND)
     },
     res
   );
@@ -52,7 +53,7 @@ UserController.get('/users/:id', async (req: Request, res: Response) => {
     async () => {
       const response = await getUserUseCase.execute(userId);
       const userDto = UserMapper.toDto(response);
-      return new ApiResponse(userDto, 'User retrieved successfully');
+      return new ApiResponse(userDto, Constants.DATA_FOUND);
     },
     res
   );
@@ -67,7 +68,7 @@ UserController.post(
       async () => {
         const response = await createUserUseCase.execute(createUserDto);
         const createdUserDto = UserMapper.toDto(response);
-        return new ApiResponse(createdUserDto, 'User created successfully', 201);       
+        return new ApiResponse(createdUserDto, Constants.CREATED, 201);       
       },
       res
     );
@@ -83,7 +84,7 @@ UserController.patch(
     await handleErrors(
       async () => {
         const response = await updateUserUseCase.execute(userId, updateUserDto);
-        return new ApiResponse(response, 'Usuario actualizado con éxito.');
+        return new ApiResponse(response, Constants.UPDATED);
       },
       res
     );
@@ -95,7 +96,7 @@ UserController.delete('/users/:id', async (req: Request, res: Response) => {
   await handleErrors(
     async () => {
       await deleteUserUseCase.execute(userId);
-      return new ApiResponse(null, 'User created successfully', 204);       
+      return new ApiResponse(null, Constants.DELETED, 204);       
     },
     res
   );

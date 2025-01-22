@@ -3,6 +3,7 @@ import { HttpClient, HttpRequest } from '@crosscutting/http';
 import { ApiResponse } from '@crosscutting/dto/response/ApiResponse';
 import { ErrorResponse } from '@crosscutting/dto/response/ErrorResponse';
 import { Logger } from '@crosscutting/logging/Logger';
+import { Constants } from '@crosscutting/utils/Constants';
 
 export class AxiosHttpClient implements HttpClient {
   private axiosInstance: AxiosInstance;
@@ -27,17 +28,17 @@ export class AxiosHttpClient implements HttpClient {
         params,
         data: body,
       });
-      return new ApiResponse(response.data, 'Request successful', response.status)
+      return new ApiResponse(response.data, Constants.SUCCESS_HTTP, response.status)
     } catch (error: any) {
       if (axios.isAxiosError(error) && error.response) {
         throw new ErrorResponse(
-          error.response.data.message || 'Request failed',
+          error.response.data.message || Constants.FAILED_HTTP,
           error.response.status,
           error.response.data
         );
       }
 
-      throw new ErrorResponse(error.message || 'Unknown error occurred');
+      throw new ErrorResponse(error.message || Constants.UNEXPECTED_ERROR);
     }
   }
 

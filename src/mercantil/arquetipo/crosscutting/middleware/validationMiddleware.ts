@@ -2,13 +2,14 @@ import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 import { Request, Response, NextFunction } from 'express';
 import { ResponseUtils } from '@crosscutting/utils/ResponseUtils';
+import { Constants } from '@crosscutting/utils/Constants';
 
 
 export const validateInput = (dto: any) => {
   return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       if (!req.body || Object.keys(req.body).length === 0) {
-        ResponseUtils.httpRes(res, "ERROR", 'El cuerpo de la solicitud está vacío.', "Error", 400)
+        ResponseUtils.httpRes(res, Constants.ERROR, Constants.BODY_EMPTY_ERROR, "Error", 400)
         return;
       }
 
@@ -20,7 +21,7 @@ export const validateInput = (dto: any) => {
           field: error.property,
           errors: Object.values(error.constraints || {}),
         }));
-        ResponseUtils.httpRes(res, "ERROR", formattedErrors, 'Datos de entrada inválidos.', 400)
+        ResponseUtils.httpRes(res, Constants.ERROR, formattedErrors, Constants.VALIDATION_ERROR, 400)
         return;
       }
 

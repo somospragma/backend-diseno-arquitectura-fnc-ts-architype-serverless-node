@@ -1,3 +1,5 @@
+import { Constants } from "@crosscutting/utils/Constants";
+
 export class ErrorResponse extends Error {
     statusCode: number;  
     status: string;
@@ -9,7 +11,7 @@ export class ErrorResponse extends Error {
     constructor(message: string, statusCode: number = 500, data?: any, transactionId:string = "") {
       super(message);
       this.message = message;
-      this.status = "ERROR"
+      this.status = Constants.ERROR
       this.statusCode = statusCode;
       this.data = data;
       this.timestamp = new Date()

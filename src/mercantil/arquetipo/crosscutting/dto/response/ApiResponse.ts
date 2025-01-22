@@ -1,3 +1,4 @@
+import { Constants } from "@crosscutting/utils/Constants";
 export class ApiResponse<T> {
     statusCode: number;  
     status: string;
@@ -8,7 +9,7 @@ export class ApiResponse<T> {
   
     constructor(data: T, message: string, statusCode: number = 200, transactionId:string = "") {
       this.statusCode = statusCode;
-      this.status = "SUCCESS"
+      this.status =  Constants.SUCCESS
       this.message = message;
       this.data = data;
       this.timestamp = new Date()

@@ -3,6 +3,7 @@ import { User } from '@userManagement/domain/models/User';
 import { UserRepositoryPort } from '@userManagement/domain/ports/in/UserRepositoryPort';
 import { AppDataSource } from '@crosscutting/configuration/AppConfig';
 import { ErrorResponse } from '@crosscutting/dto/response/ErrorResponse';
+import { Constants } from '@crosscutting/utils/Constants';
 
 export class UserDataProvider implements UserRepositoryPort {
   private userRepository: Repository<User>;
@@ -53,7 +54,7 @@ export class UserDataProvider implements UserRepositoryPort {
   async update(user: User): Promise<User> {
     const existingUser = await this.findById(user.id);
     if (!existingUser) {
-      throw new ErrorResponse('Usuario no encontrado', 404);
+      throw new ErrorResponse(Constants.NOT_FOUND, 404);
     }
     return await this.userRepository.save({ ...existingUser, ...user });
   }
@@ -65,7 +66,7 @@ export class UserDataProvider implements UserRepositoryPort {
   async delete(userId: number): Promise<void> {
     const existingUser = await this.findById(userId);
     if (!existingUser) {
-      throw new ErrorResponse('Usuario no encontrado', 404);
+      throw new ErrorResponse(Constants.NOT_FOUND, 404);
     }
     await this.userRepository.delete(userId);
   }

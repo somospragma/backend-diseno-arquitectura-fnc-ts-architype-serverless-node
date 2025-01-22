@@ -6,7 +6,7 @@ import { handleErrors } from '@crosscutting/middleware/ErrorHandlingMiddleware';
 import Redis from 'ioredis';
 import { ApiResponse } from '@crosscutting/dto/response/ApiResponse';
 import { Parameter } from '@parameterManagement/application/dto/response/Parameter';
-import { ErrorResponse } from '@crosscutting/dto/response/ErrorResponse';
+import { Constants } from '@crosscutting/utils/Constants';
 
 
 export const ParameterController = (redisClient: Redis): Router => {
@@ -21,11 +21,8 @@ export const ParameterController = (redisClient: Redis): Router => {
     await handleErrors(
       async () => {
         const response = await getParameterUseCase.execute(req.params.key);
-        if(response){
-          const parameter = new Parameter(req.params.key, response)
-          return new ApiResponse(parameter, 'Valor obtenido con éxito');
-        }
-        throw new ErrorResponse('Key no existente', 404)
+        const parameter = new Parameter(req.params.key, response)
+        return new ApiResponse(parameter, Constants.DATA_FOUND);
       },
       res
     );
