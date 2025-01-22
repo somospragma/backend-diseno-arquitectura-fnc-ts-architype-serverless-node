@@ -20,7 +20,7 @@ async function handler(
 
   return handleFunctionErrors(context, async () => {
     const transactionId = req.headers.get('transactionId');
-    const redisClient = createRedisClient();
+    // const redisClient = createRedisClient();
     const key = req.params.key;
 
     if (!key) {
@@ -30,16 +30,15 @@ async function handler(
       };
     }
 
-    const repository = new RedisParameterRepository(redisClient);
-    const service = new ParameterService(repository);
-    const getParameterUseCase = new GetParameterUseCase(service);
-
-    const parameterValue = await getParameterUseCase.execute(key);
-    context.log(parameterValue, transactionId);
+    // const repository = new RedisParameterRepository(redisClient);
+    // const service = new ParameterService(repository);
+    // const getParameterUseCase = new GetParameterUseCase(service);
+    // const parameterValue = await getParameterUseCase.execute(key);
+    // context.log(parameterValue, transactionId);
 
     return {
       status: 200,
-      body: JSON.stringify(new ApiResponse(parameterValue, Constants.DATA_FOUND, 200)),
+      body: JSON.stringify(new ApiResponse("correcto", Constants.DATA_FOUND, 200)),
     };
   });
 }
