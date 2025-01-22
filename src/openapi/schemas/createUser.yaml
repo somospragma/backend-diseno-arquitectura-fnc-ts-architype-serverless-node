@@ -1,0 +1,19 @@
+type: object
+properties:
+  firstName:
+    type: string
+    example: John
+    description: Nombre del usuario.
+  lastName:
+    type: string
+    example: Doe
+    description: Apellido del usuario.
+  birthDate:
+    type: string
+    format: date
+    example: 1990-01-01
+    description: Fecha de nacimiento del usuario.
+required:
+  - firstName
+  - lastName
+  - birthDate

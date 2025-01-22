@@ -1,0 +1,9 @@
+openapi: 3.0.1
+info:
+  title: "mercantil-node-arquetipo"
+  version: "1.0"
+paths:
+  /parameters/{key}:
+    $ref: "./resources/parameters.yaml"
+  /users:
+    $ref: "./resources/users.yaml"

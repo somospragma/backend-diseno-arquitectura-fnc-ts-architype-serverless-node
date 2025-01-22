@@ -1,0 +1,29 @@
+  post:
+      summary: Crea un nuevo usuario
+      description: Este endpoint permite crear un usuario.
+      requestBody:
+        description: Datos necesarios para crear un usuario.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/createUser.yaml'
+      responses:
+        '201':
+          description: Creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '../responses/successResponse.yaml'
+        '400':
+          description: Solicitud inválida
+          content:
+            application/json:
+              schema:
+                $ref: '../responses/errorResponse.yaml'
+        '500':
+          description: Error en la aplicación
+          content:
+            application/json:
+              schema:        
+                $ref: '../responses/errorResponse.yaml'

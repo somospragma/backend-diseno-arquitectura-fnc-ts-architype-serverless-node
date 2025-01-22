@@ -1,0 +1,24 @@
+  get:
+      summary: Obtiene un parámetro por clave
+      description: Retorna el valor asociado a una clave en el sistema de parámetros.
+      parameters:
+        - $ref: '../parameters/keyParameter.yaml'
+      responses:
+        '200':
+          description: Obtenido correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '../responses/successResponse.yaml'
+        '404':
+          description: Dato no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '../responses/errorResponse.yaml'
+        '500':
+          description: Error en la aplicación
+          content:
+            application/json:
+              schema:        
+                $ref: '../responses/errorResponse.yaml'

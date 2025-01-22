@@ -1,0 +1,29 @@
+type: object
+properties:
+  statusCode:
+    type: integer
+    example: 200
+  status:
+    type: string
+    example: SUCCESS
+  data:
+    oneOf:
+      - $ref: '../schemas/parameterResponse.yaml'
+      - $ref: '../schemas/userResponse.yaml'
+  message:
+    type: string
+    example: Obtenido con éxito
+  timestamp:
+    type: string
+    format: date-time
+    example: 2025-01-22T18:59:11.688Z
+  transactionId:
+    type: string
+    example: ""
+required:
+  - statusCode
+  - status
+  - data
+  - message
+  - timestamp
+  - transactionId

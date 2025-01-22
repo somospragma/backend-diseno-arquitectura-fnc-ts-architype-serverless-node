@@ -1,0 +1,6 @@
+name: key
+in: path
+required: true
+description: La clave del parámetro a recuperar.
+schema:
+  type: string

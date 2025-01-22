@@ -1,0 +1,11 @@
+type: object
+properties:
+  parameter:
+    type: string
+    example: min_age
+  value:
+    type: string
+    example: "18"
+required:
+  - parameter
+  - value

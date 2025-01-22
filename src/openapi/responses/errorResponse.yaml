@@ -1,0 +1,28 @@
+type: object
+properties:
+  statusCode:
+    type: integer
+    example: 404
+  status:
+    type: string
+    example: ERROR
+  data:
+    type: string
+    example: Dato no encontrado
+  message:
+    type: string
+    example: Error
+  timestamp:
+    type: string
+    format: date-time
+    example: 2025-01-22T19:00:00.963Z
+  transactionId:
+    type: string
+    example: ""
+required:
+  - statusCode
+  - status
+  - data
+  - message
+  - timestamp
+  - transactionId

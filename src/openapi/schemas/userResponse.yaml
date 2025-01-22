@@ -1,0 +1,16 @@
+type: object
+properties:
+  id:
+    type: string
+    example: "1"
+  fullName:
+    type: string
+    example: John Doe
+  birthDate:
+    type: string
+    format: date
+    example: 1990-01-01
+required:
+  - id
+  - fullName
+  - birthDate

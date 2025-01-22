@@ -32,10 +32,10 @@ export class UserService {
 
 
   async createUser(user: User): Promise<User> {    
-    await this.validate_age(user.birthDate)
     return await this.userRepository.create(user);
   }
-
+  
+  //función realizada para validar el comportamiento REST
   private async validate_age(birthDate: string): Promise<void> {
     const minAgeResponse = await this.parameterRestClient.getParameter('min_age');
     const maxAgeResponse = await this.parameterRestClient.getParameter('max_age');
