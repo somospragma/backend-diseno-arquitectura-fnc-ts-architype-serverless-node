@@ -9,7 +9,7 @@
           content:
             application/json:
               schema:
-                $ref: '../responses/successResponse.yaml'
+                $ref: '../responses/parameterSuccessResponse.yaml'
         '404':
           description: Dato no encontrado
           content:

@@ -7,9 +7,7 @@ properties:
     type: string
     example: SUCCESS
   data:
-    oneOf:
-      - $ref: '../schemas/parameterResponse.yaml'
-      - $ref: '../schemas/userResponse.yaml'
+    $ref: '../schemas/userResponse.yaml'
   message:
     type: string
     example: Obtenido con éxito

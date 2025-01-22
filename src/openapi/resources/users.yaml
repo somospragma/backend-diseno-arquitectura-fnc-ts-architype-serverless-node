@@ -14,7 +14,7 @@
           content:
             application/json:
               schema:
-                $ref: '../responses/successResponse.yaml'
+                $ref: '../responses/userSuccessResponse.yaml'
         '400':
           description: Solicitud inválida
           content:
