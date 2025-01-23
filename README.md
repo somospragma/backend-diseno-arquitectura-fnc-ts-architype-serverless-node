@@ -1,6 +1,6 @@
 | Fecha | Descripción | Realizado por | Validado por | Fecha de Validación |
 |:-:|:-:|:-:|:-:|:-:|
-| 25/11/2024 | Creación del Documento | Jairo Andrés Duarte Guzmán |**|**|
+| 23/01/2025 | Creación del Documento | José Gabriel Chica Rojas|**|**|
 
 # Arquetipo
 
@@ -208,26 +208,14 @@ El Patrón Estrategia permite definir una familia de algoritmos, encapsular cada
 
 * **Aplicación en el Arquetipo:**
     * **Múltiples Implementaciones de Proveedores de Datos:**
-        * Interfaces como **`IDataProvider`**, **`INoSqlDataProvider`**, **`ISqlDataProvider`** y sus implementaciones correspondientes (**`NoSqlDataProvider.java`**, **`SqlDataProvider.java`**).
+        * Interfaces como **`IDataProvider`**y sus implementaciones correspondientes (**`NoSqlDataProvider.java`**, **`SqlDataProvider.java`**).
 
 * **Cómo se Aplica:**
     * La aplicación puede elegir dinámicamente qué estrategia (proveedor de datos) utilizar en tiempo de ejecución, permitiendo cambiar entre diferentes formas de acceso a datos sin modificar el código cliente.
     * Facilita la extensión de nuevas estrategias de almacenamiento o acceso a datos en el futuro.
 
-### 4.7. Patrón Observador (Observer Pattern)
 
-El Patrón Observador define una dependencia uno a muchos entre objetos, de manera que cuando un objeto cambia de estado, todos sus dependientes son notificados y actualizados automáticamente.
-
-* **Aplicación en el Arquetipo:**
-    * **Manejo de Eventos:**
-        * Eventos y Manejadores en **`domain/events`** y **`infrastructure/eventhandlers`**:
-            * Actualmente no se han creado las clases, los directorios **`events`** y **`eventhandlers`** lo ideal es el uso eventos y suscriptores.
-
-* **Cómo se Aplica:**
-    * Cuando ocurre un evento en el dominio (por ejemplo, la creación de un préstamo), se puede notificar a múltiples manejadores que realizan acciones adicionales (enviar correos electrónicos, actualizar estadísticas, entre otros.).
-    * Desacopla el origen del evento de los efectos secundarios, mejorando la modularidad y extensibilidad.
-
-### 4.8. Patrón Singleton
+### 4.7. Patrón Singleton
 
 El Patrón Singleton asegura que una clase tenga solo una instancia y proporciona un punto de acceso global a ella.
 
@@ -239,7 +227,7 @@ El Patrón Singleton asegura que una clase tenga solo una instancia y proporcion
     * Garantiza que componentes críticos como la configuración de secretos o ciertos servicios compartidos tengan una única instancia en toda la aplicación.
     * Controla el acceso y gestión de recursos compartidos.
 
-### 4.9. Patrón Inyección de Dependencias (Dependency Injection)
+### 4.8. Patrón Inyección de Dependencias (Dependency Injection)
 
 La Inyección de Dependencias es un patrón donde las dependencias (servicios, repositorios, etc.) son proporcionadas a una clase en lugar de ser creadas por ella misma. Promueve la modularidad y facilita las pruebas.
 
@@ -253,7 +241,7 @@ La Inyección de Dependencias es un patrón donde las dependencias (servicios, r
     * Las clases no crean sus propias dependencias, sino que las reciben a través del constructor o propiedades, facilitando la inversión de control.
     * Mejora la testeabilidad al permitir inyectar implementaciones simuladas o mock durante las pruebas.
 
-### 4.10. Patrón Aspecto (Aspect-Oriented Programming - AOP)
+### 4.9. Patrón Aspecto (Aspect-Oriented Programming - AOP)
 
 La Programación Orientada a Aspectos permite separar las preocupaciones transversales (como logging, manejo de excepciones, seguridad, entre otros) del código de negocio principal mediante la definición de aspectos.
 
@@ -266,7 +254,7 @@ La Programación Orientada a Aspectos permite separar las preocupaciones transve
     * Los aspectos interceptan llamadas a métodos y añaden funcionalidad adicional sin modificar el código original.
     * Facilitan la implementación de funcionalidades transversales de manera centralizada y reutilizable.
 
-### 4.11. Patrón Builder (Constructor)
+### 4.10. Patrón Builder (Constructor)
 
 El Patrón Builder separa la construcción de un objeto complejo de su representación, permitiendo que el mismo proceso de construcción pueda crear diferentes representaciones.
 
@@ -278,7 +266,7 @@ El Patrón Builder separa la construcción de un objeto complejo de su represent
     * Facilita la creación de objetos con múltiples propiedades, especialmente cuando algunas son opcionales o requieren validación.
     * Mejora la legibilidad y evita constructores con muchos parámetros.
 
-### 4.12. Patrón Decorador (Decorator Pattern)
+### 4.11. Patrón Decorador (Decorator Pattern)
 
 El Patrón Decorador permite agregar dinámicamente responsabilidades adicionales a un objeto.
 
@@ -290,7 +278,7 @@ El Patrón Decorador permite agregar dinámicamente responsabilidades adicionale
     * Extiende la funcionalidad de los servicios sin modificar su código original.
     * Permite agregar características de manera flexible y modular.
 
-### 4.13. Patrón Puente (Bridge Pattern)
+### 4.12. Patrón Puente (Bridge Pattern)
 
 El Patrón Puente desacopla una abstracción de su implementación para que ambas puedan variar independientemente.
 
@@ -303,7 +291,7 @@ El Patrón Puente desacopla una abstracción de su implementación para que amba
     * Permite que la abstracción y la implementación evolucionen de manera independiente.
     * Facilita la extensión y modificación de implementaciones sin cambiar las abstracciones.
 
-### 4.14. Aplicación de los Principios SOLID
+### 4.13. Aplicación de los Principios SOLID
 
 Además de los patrones de diseño, se esta aplicando los principios **`SOLID`**:
 
