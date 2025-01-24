@@ -196,7 +196,7 @@ El Patrón Fachada proporciona una interfaz simplificada a un conjunto de interf
 
 * **Aplicación en el Arquetipo:**
     * **Servicios de Dominio como Fachadas:**
-        * **`ParameterService.ts`** actúa como una fachada que encapsula las operaciones relacionadas con préstamos, proporcionando métodos sencillos al resto de la aplicación.
+        * **`ParameterService.ts`** actúa como una fachada que encapsula las operaciones relacionadas con parámetros, proporcionando métodos sencillos al resto de la aplicación.
 
 * **Cómo se Aplica:**
     * Los servicios de dominio ofrecen una interfaz clara y simplificada para operaciones complejas que pueden involucrar múltiples repositorios, entidades y lógica de negocio.
@@ -320,7 +320,7 @@ Esta guía proporciona una descripción detallada de la Arquitectura Hexagonal i
 
 **Propósito:** contiene la lógica de negocio pura y las reglas que gobiernan el comportamiento de la aplicación. Esta capa es independiente de frameworks y detalles de implementación externos. Aquí se modelan las entidades de negocio (ahora llamadas **modelos**), eventos y puertos que permiten una interacción desacoplada con la infraestructura.
 
-**Ubicación:** **`mercantil/arquetipo/parameterManagement/domain`**, **`mercantil/arquetipo/userManagement/domain`**
+**Ubicación:**  **`src\mercantil\arquetipo\userManagement\domain`**
 
 **Componentes Principales:**
 * **Modelos (**`models`**):**
@@ -328,8 +328,8 @@ Esta guía proporciona una descripción detallada de la Arquitectura Hexagonal i
         * Representan el modelo de negocio **`user`** con sus propiedades y comportamientos.
         * Se definen atributos como el ID del usuario, nombre, apellido y fecha de nacimiento
         * **Ejemplo de Implementación en el Arquetipo:**
-        
-            ```javascript
+
+            ```typescript
                 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
                 @Entity({ name: 'users' })
@@ -354,9 +354,233 @@ Esta guía proporciona una descripción detallada de la Arquitectura Hexagonal i
                 }
                 }
 
-            ```        
+            ```
+            
+        * **Ejemplo de Uso:**
+            ```typescript
+                new User(userId, userDto.firstName, userDto.lastName, userDto.bithDate), 
+            ```
 
-    
+* **Puertos del Dominio (**`ports`**):**
+    * **`in`:** interfaces que definen las operaciones de entrada al dominio; ejemplo: **`UserRepositoryPort.ts`**, **`ParameterRepositoryPort.ts`**.
+        * **Ejemplo de Implementación en el Arquetipo:**            
+
+            ```typescript
+                import { ApiResponse } from "@crosscutting/dto/response/ApiResponse";
+                import { ParameterResponseDTO } from "@userManagement/infrastructure/dataProviders/restClients/response/ParameterResponseDTO";
+
+                export interface ParameterRepositoryPort {
+                    getParameter(key: string): Promise<ApiResponse<ParameterResponseDTO>>;
+                }
+            ```        
+        * **Ejemplo de Uso:**
+            ```typescript
+                export class ParameterRestClient implements ParameterRepositoryPort { ...
+                       private readonly httpClient: HttpClient;
+
+                    constructor(httpClient: HttpClient) {
+                    this.httpClient = httpClient;
+                    }
+                
+                    async getParameter(key: string): Promise<ApiResponse<ParameterResponseDTO>> {
+                    const response = await this.httpClient.request<any>({
+                        url: `/parameters/${key}`,
+                        method: 'GET',
+                    });
+                
+                    return response.data || null;
+                    }
+                }
+            ```          
+* **Servicios de Dominio (**`services`**):**
+    * **`UserService.ts`**
+        * Encapsulan la lógica de negocio relacionada.
+        * **Principales Métodos:**
+            * **`  async createUser(user: User)`**
+            * **Ejemplo de Implementación en el Arquetipo:**
+        ```typescript
+            export class CreateUserUseCase {
+                private readonly userService: UserService;
+
+                constructor(userService: UserService) {
+                    this.userService = userService;
+                }
+                async execute(userDto: CreateUserDto): Promise<User> {
+                    const user = new User(0, userDto.firstName, userDto.lastName, userDto.birthDate); 
+                    return await this.userService.createUser(user);
+                }
+            }
+        ```
+              
+
+#### 5.1.2. Capa de Aplicación
+
+**Propósito:** orquesta los casos de uso de la aplicación, coordinando la interacción entre la capa de dominio y el mundo exterior. No contiene lógica de negocio, sino que se encarga de los flujos y procesos. Esta capa recibe las peticiones de la infraestructura (por ejemplo, a través de controladores), las valida, invoca la capa de dominio y devuelve resultados adecuados.
+
+**Ubicación:** **`src\mercantil\arquetipo\userManagement\application`**
+
+**Componentes Principales:**
+* **Casos de Uso (**`usecases`**):**
+    * **`CreateUserUseCase.ts`**
+        * clases que definen las operaciones de entrada a los casos de uso.
+        * **Método Principal:**
+            * **`execute(userDto: CreateUserDto)`**
+            * **Ejemplo de Implementación en el Arquetipo:**
+        ```javascript
+            async execute(userDto: CreateUserDto): Promise<User>
+        ```    
+
+
+* **Data Transfer Objects (**`dto`**):**
+    * **`CreateUserDto.ts`**
+        * Objeto utilizado para transferir datos de usuario entre capas.
+        * **Ejemplo de Implementación en el Arquetipo:**
+            ```typescript
+            {
+                import { Constants } from '@crosscutting/utils/Constants';
+                import { IsString, IsNotEmpty, Length, IsDateString } from 'class-validator';
+
+                export class CreateUserDto {
+                @IsString()
+                @IsNotEmpty({ message: Constants.VALIDATION_USERNAME })
+                @Length(1, 100, { message: Constants.VALIDATION_USERNAME_LENGTH })
+                firstName!: string;
+
+                @IsString()
+                @IsNotEmpty({ message: Constants.VALIDATION_LASTNAME })
+                @Length(1, 100, { message: Constants.VALIDATION_LASTNAME_LENGTH })
+                lastName!: string;
+
+                @IsString()
+                @IsNotEmpty({ message: Constants.VALIDATION_BIRTHDATE })
+                @IsDateString({}, { message: Constants.VALIDATION_BIRTHDATE_FORMAT })
+                birthDate!: string;
+                }
+            }
+
+            ``` 
+* **Mappers (**`mappers`**):**
+    * **`UserMapper.ts`**
+        * Garantiza que la aplicación tenga un punto centralizado para la conversión de datos.
+            * **Ejemplo de Implementación en el Arquetipo:**
+                ```typescript
+                    export class UserMapper {
+                    
+                    /**
+                    *
+                    *
+                    * @static
+                    * @param {User} user
+                    * @return {*}  {UserDtoResponse}
+                    * @memberof UserMapper
+                    */
+                    static toDto(user: User): UserDtoResponse {
+                        return new UserDtoResponse(user.id, `${user.firstName} ${user.lastName}`, user.birthDate);
+                    }
+
+                    
+                    /**
+                    *
+                    *
+                    * @static
+                    * @param {UserDtoResponse} UserDtoResponse
+                    * @return {*}  {User}
+                    * @memberof UserMapper
+                    */
+                    static toEntity(userDto: UserDtoResponse): User {
+                        const [firstName, lastName] = userDto.fullName.split(' ');
+                        return new User(userDto.id, firstName, lastName, userDto.birthDate);
+                    }
+                    }
+
+                ```
+
+#### 5.1.3 Capa de Infraestructura
+
+
+**Propósito:** implementa los detalles técnicos y proporciona las herramientas necesarias para que la aplicación funcione. Esto incluye controladores, proveedores de datos, clientes REST, entre otros. La infraestructura cumple con los contratos definidos por el dominio (puertos out) proveyendo implementaciones concretas.
+
+**Ubicación:** **`src\mercantil\arquetipo\userManagement\infrastructure`**
+
+**Componentes Principales:**
+* **Controladores (**`controllers`**):**
+    * **`UserController.ts`**
+        * Exponen los endpoints REST para interactuar con la aplicación.
+        * Endpoints Principales:
+            * **`POST /api/users`** - Crear un nuevo préstamo.
+            * **Ejemplo de Implementación en el Arquetipo:**
+        ```typescript
+        UserController.post(
+            '/users',
+            validateInput(CreateUserDto),
+            async (req: Request, res: Response) => {
+                const createUserDto = plainToInstance(CreateUserDto, req.body);
+                await handleErrors(
+                async () => {
+                    const response = await createUserUseCase.execute(createUserDto);
+                    const createdUserDto = UserMapper.toDto(response);
+                    return new ApiResponse(createdUserDto, Constants.CREATED, 201);       
+                },
+                res
+                );
+            }
+            );
+        ```
+* **Proveedores de Datos (**`dataproviders`**):**
+    * **`userDataProvider.java`**  
+        * **Ejemplo de Implementación en el Arquetipo:**
+            ```typescript
+                export class UserDataProvider implements UserRepositoryPort {
+                private userRepository: Repository<User>;
+
+                constructor() {
+                    this.userRepository = AppDataSource.getRepository(User);
+                }
+
+                /**
+                * Retorna el número total de usuarios.
+                */
+                async count(): Promise<number> {
+                    return await this.userRepository.count();
+                }
+
+                /**
+                * Busca un usuario por ID.
+                * @param userId ID del usuario
+                */
+                async findById(userId: number): Promise<User | null> {
+                    return await this.userRepository.findOneBy({ id: userId });
+                }
+            ```
+
+* **Cliente Rest (**`restclients`**):**
+    * Proveen funcionalidades para consumir sistemas externos.
+        > **Nota:** para más detalle visitar en el arquetipo la implementación de esta clase en la siguiente ruta: **`src\mercantil\arquetipo\userManagement\infrastructure\dataProviders\restClients`**
+
+#### 5.1.4. Capas Transversales (Crosscutting)
+
+**Propósito:** contienen funcionalidades que son transversales a todas las capas, como manejo de excepciones, logging, internacionalización de mensajes,configuración global, constantes, http, utilitatios, entre otros. Esta capa ofrece servicios compartidos que no pertenecen a la lógica de negocio ni a la infraestructura específica.
+
+**Ubicación:** **`src\mercantil\arquetipo\crosscutting`**
+**Componentes Principales:**
+* **configutarion (**`AppConfig`**):**
+    * Manejan configuraciones de conexiones globales, ya sea base de datos o conexiones a Redis, entre otros, permite tener generalizadas estas funcionalidades y extenderlos a las capas que se requieran
+      * **`AppConfig.ts`**
+        * **Ejemplo de Implementación en el Arquetipo:**
+            ```typescript
+            {
+                export const createRedisClient = (): Redis => {
+                return new Redis({
+                    host: process.env.REDIS_HOST || '127.0.0.1',
+                    port: parseInt(process.env.REDIS_PORT || '6379', 10),
+                    password: process.env.REDIS_PASSWORD || undefined,
+                });
+                };
+            }
+            ```
+* **Dtos (**`dto`**):**
+    * Manejan data to objects globales que pueden ser usado en cada Dominio de negocio
+
 
 
 ## 6 Guía de comandos para desarrollo y despliegue
