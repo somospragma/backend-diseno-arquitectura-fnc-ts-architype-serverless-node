@@ -208,7 +208,7 @@ El Patrón Estrategia permite definir una familia de algoritmos, encapsular cada
 
 * **Aplicación en el Arquetipo:**
     * **Múltiples Implementaciones de Proveedores de Datos:**
-        * Interfaces como **`IDataProvider`**y sus implementaciones correspondientes (**`NoSqlDataProvider.java`**, **`SqlDataProvider.java`**).
+        * Interfaces como **`UserRepositoryPort`**y sus implementaciones correspondientes (**`userDataProvider.ts`**).
 
 * **Cómo se Aplica:**
     * La aplicación puede elegir dinámicamente qué estrategia (proveedor de datos) utilizar en tiempo de ejecución, permitiendo cambiar entre diferentes formas de acceso a datos sin modificar el código cliente.
@@ -221,7 +221,7 @@ El Patrón Singleton asegura que una clase tenga solo una instancia y proporcion
 
 * **Aplicación en el Arquetipo:**
     * **Servicios de Configuración y Manejo de Secretos:**
-        * **`SecretService.java`** esta implementado como un singleton para asegurar un único punto de acceso a los secretos de la aplicación.
+        * **`AppConfig.ts`**, **`Logger.ts`** esta implementado como un singleton para asegurar un único punto de acceso a los secretos de la aplicación.
 
 * **Cómo se Aplica:**
     * Garantiza que componentes críticos como la configuración de secretos o ciertos servicios compartidos tengan una única instancia en toda la aplicación.
@@ -234,8 +234,8 @@ La Inyección de Dependencias es un patrón donde las dependencias (servicios, r
 * **Aplicación en el Arquetipo:**
     * **Uso de Anotaciones como **`@Autowired:`****
         * Inyección de servicios y repositorios en controladores y casos de uso.
-    * **Configuraciones en **`infrastructure/configuration`**:**
-        * Clases como **`RepositoryConfig.java`** y **`DataSourceConfig.java`** definen cómo se configuran e inyectan las dependencias.
+    * **Configuraciones en **`infrastructure/controller`**:**
+        * Clases como **`UserController.ts`** y **`ParameterController.ts`** definen cómo se configuran e inyectan las dependencias.
 
 * **Cómo se Aplica:**
     * Las clases no crean sus propias dependencias, sino que las reciben a través del constructor o propiedades, facilitando la inversión de control.
@@ -246,9 +246,8 @@ La Inyección de Dependencias es un patrón donde las dependencias (servicios, r
 La Programación Orientada a Aspectos permite separar las preocupaciones transversales (como logging, manejo de excepciones, seguridad, entre otros) del código de negocio principal mediante la definición de aspectos.
 
 * **Aplicación en el Arquetipo:**
-    * **Aspects en **`crosscutting/aspects`**:**
-        * **`LoggingAspect.java`**
-        * **`ExceptionHandlingAspect.java`**
+    * **Aspects en **`crosscutting/helpers`**:**
+        * **`handleFunctionErrors.ts`**
 
 * **Cómo se Aplica:**
     * Los aspectos interceptan llamadas a métodos y añaden funcionalidad adicional sin modificar el código original.
@@ -260,7 +259,7 @@ El Patrón Builder separa la construcción de un objeto complejo de su represent
 
 * **Aplicación en el Arquetipo:**
     * **Construcción de Objetos DTO o Entidades:**
-        * Se esta utilizando builders para crear instancias de **`LoanDTO`** o **`LoanSQLEntity`** con un enfoque más legible y mantenible.
+        * Se esta utilizando builders para crear instancias de **`PaginationRequestDto.ts`** o **`Parameter.ts`** con un enfoque más legible y mantenible.
 
 * **Cómo se Aplica:**
     * Facilita la creación de objetos con múltiples propiedades, especialmente cuando algunas son opcionales o requieren validación.
@@ -272,7 +271,7 @@ El Patrón Decorador permite agregar dinámicamente responsabilidades adicionale
 
 * **Aplicación en el Arquetipo:**
     * **Servicios de Mensajes y Logging:**
-        * Se esta decorando servicios para añadir funcionalidades adicionales como **`logging`** o **`manejo de errores`**.
+        * Se esta decorando servicios para añadir funcionalidades adicionales como **`ErrorHandlingMiddleware.ts`** o **`validationMiddleware.ts`**.
 
 * **Cómo se Aplica:**
     * Extiende la funcionalidad de los servicios sin modificar su código original.
@@ -284,8 +283,8 @@ El Patrón Puente desacopla una abstracción de su implementación para que amba
 
 * **Aplicación en el Arquetipo:**
     * **Interfaces y Implementaciones Separadas:**
-        * Separación de interfaces como **`ILoggerService`** y sus implementaciones en **`LoggerService.java`**.
-        * Esto permite cambiar la implementación del logger sin afectar al código que lo utiliza.
+        * Separación de interfaces como **`IParameterRepository.ts`** y sus implementaciones en **`RedisParameterRepository.ts`**.
+        * Esto permite cambiar la implementación del repositorio sin afectar quien lo utiliza.
 
 * **Cómo se Aplica:**
     * Permite que la abstracción y la implementación evolucionen de manera independiente.
@@ -296,19 +295,19 @@ El Patrón Puente desacopla una abstracción de su implementación para que amba
 Además de los patrones de diseño, se esta aplicando los principios **`SOLID`**:
 
 * **Single Responsibility Principle (SRP):**
-    * Cada clase tiene una única responsabilidad, como **`LoanService`** que maneja la lógica de préstamos.
+    * Cada clase tiene una responsabilidad clara, como **`ParameterService`** para lógica de negocio o **`ParameterController`** para manejar solicitudes HTTP.
 
 * **Open/Closed Principle (OCP):**
-    * Las clases están abiertas para extensión pero cerradas para modificación, permitiendo agregar nuevas funcionalidades sin cambiar el código existente.
+    * Las interfaces en domain/ports permiten que el sistema sea extensible sin modificar las clases existentes.
 
 * **Liskov Substitution Principle (LSP):**
-    * Las clases derivadas pueden sustituir a sus clases base sin alterar el correcto funcionamiento de la aplicación.
+    * Las implementaciones de repositorios (**`RedisParameterRepository`**) pueden reemplazar sus interfaces (**`IParameterRepository`**) sin alterar el comportamiento del sistema.
 
 * **Interface Segregation Principle (ISP):**
-    * Se crean interfaces específicas y pequeñas, evitando depender de métodos que no se utilizan.
+    * Las interfaces están bien definidas y especializadas, como **`IParameterRepository`** y **`UserRepositoryPort`**.
 
 * **Dependency Inversion Principle (DIP):**
-    * Se depende de abstracciones (**`interfaces`**) en lugar de implementaciones concretas, facilitando el cambio de implementaciones sin afectar al código que las utiliza.
+    * Los casos de uso (**`GetParameterUseCase`**, **`CreateUserUseCase`**) dependen de abstracciones como servicios y repositorios, no de implementaciones concretas.
 
 ## 5. Guía de Arquitectura Hexagonal para Desarrolladores
 
