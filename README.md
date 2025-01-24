@@ -315,8 +315,54 @@ Esta guía proporciona una descripción detallada de la Arquitectura Hexagonal i
 
 ![ArquitecturaHexagonalDesarrolladores](./imagenes/ArquitecturaHexagonalDesarrolladores.png)
 
+
+5.1.1. Capa de Dominio
+
+**Propósito:** contiene la lógica de negocio pura y las reglas que gobiernan el comportamiento de la aplicación. Esta capa es independiente de frameworks y detalles de implementación externos. Aquí se modelan las entidades de negocio (ahora llamadas **modelos**), eventos y puertos que permiten una interacción desacoplada con la infraestructura.
+
+**Ubicación:** **`mercantil/arquetipo/parameterManagement/domain`**, **`mercantil/arquetipo/userManagement/domain`**
+
+**Componentes Principales:**
+* **Modelos (**`models`**):**
+ * **`User.ts`**
+        * Representan el modelo de negocio **`user`** con sus propiedades y comportamientos.
+        * Se definen atributos como el ID del usuario, nombre, apellido y fecha de nacimiento
+        * **Ejemplo de Implementación en el Arquetipo:**
+            ```typescript
+                import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+
+
+                @Entity({ name: 'users' })
+                export class User {
+                @PrimaryGeneratedColumn()
+                id!: number;
+
+                @Column({ name: 'first_name', type: 'varchar', length: 100 })
+                firstName!: string;
+
+                @Column({ name: 'last_name', type: 'varchar', length: 100 })
+                lastName!: string;
+
+                @Column({ name: 'birth_date', type: 'date'})
+                birthDate!: string;
+
+                constructor(id:number, firstName: string, lastName: string, birthDate: string) {
+                    this.id = id;
+                    this.firstName = firstName;
+                    this.lastName = lastName;
+                    this.birthDate = birthDate;
+                }
+                }
+
+            ```        
+
+    
+
+
+## 6 Guía de comandos para desarrollo y despliegue
+
 # Generate Migration
-To generate migration need generate build first
+To generate migration need generate build first 
 npm run migration:generate -- ./src/infrastructure/migrations/CreateUsersTable
 
 # Build and Test
