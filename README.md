@@ -328,9 +328,9 @@ Esta guía proporciona una descripción detallada de la Arquitectura Hexagonal i
         * Representan el modelo de negocio **`user`** con sus propiedades y comportamientos.
         * Se definen atributos como el ID del usuario, nombre, apellido y fecha de nacimiento
         * **Ejemplo de Implementación en el Arquetipo:**
-            ```typescript
+        
+            ```javascript
                 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-
 
                 @Entity({ name: 'users' })
                 export class User {
