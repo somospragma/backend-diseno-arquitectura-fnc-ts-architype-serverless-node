@@ -579,15 +579,86 @@ Esta guía proporciona una descripción detallada de la Arquitectura Hexagonal i
             }
             ```
 * **Dtos (**`dto`**):**
-    * Manejan data to objects globales que pueden ser usado en cada Dominio de negocio
+    * Gestionan objetos de datos globales que pueden ser utilizados en cada dominio de negocio.
+* **Helpers (**`helpers`**):**
+    * Manejan funciones globales reutilizables por las funciones serverless.
+* **Http (**`http`**):**
+    * Centraliza las funciones necesarias para realizar solicitudes HTTP en una única función general.
+* **Logging (**`logging`**):**
+    * Proporciona una capa de encapsulación para los registros de la aplicación.
+* **Middleware (**`middleware`**):**
+    * Contiene métodos para la validación de datos de entrada y salida, los cuales deben ser llamados durante la ejecución de las solicitudes.
+* **Utils (**`utls`**):**
+    * Incluye métodos utilitarios que son utilizados en toda la aplicación, tales como constantes.
 
+#### 5.1.5. Capas Serveless (Functions)
 
+**Propósito:** Contienen las funciones que se ejecutarán como serverless en Azure. Estas funciones serán responsables de invocar los dominios de negocio definidos en el snapshot, o la función específica del dominio que encapsule su respectivo modelo de negocio.
+**Ubicación:** **`src\functions`**
+      * **`ObtainParameterFunction.ts`**
+        * **Ejemplo de Implementación en el Arquetipo:**
 
-## 6 Guía de comandos para desarrollo y despliegue
+            ```typescript
 
-# Generate Migration
-To generate migration need generate build first 
-npm run migration:generate -- ./src/infrastructure/migrations/CreateUsersTable
+                // Nombre dinámico de la función
+                const functionName = `NOVA-${process.env.VALIDATION_TYPE}-${process.env.FUNCTION_NAME_OBTAIN_PARAMETER}-${process.env.ENVIRONMENT}-${process.env.REGION}`;
+
+                async function handler(
+                req: HttpRequest,
+                context: InvocationContext
+                ): Promise<HttpResponseInit> {
+                context.log(`Executing Azure Function: ${functionName}`);
+
+                return handleFunctionErrors(context, async () => {
+                    const transactionId = req.headers.get('transactionId');
+                    const redisClient = createRedisClient();
+                    const key = req.params.key;
+
+                    if (!key) {
+                    return {
+                        status: 400,
+                        body: JSON.stringify(new ErrorResponse(Constants.NOT_FOUND, 400)),
+                    };
+                    }
+
+                    const repository = new RedisParameterRepository(redisClient);
+                    const service = new ParameterService(repository);
+                    const getParameterUseCase = new GetParameterUseCase(service);
+
+                    const parameterValue = await getParameterUseCase.execute(key);
+                    context.log(parameterValue, transactionId);
+
+                    return {
+                    status: 200,
+                    body: JSON.stringify(new ApiResponse(parameterValue, Constants.DATA_FOUND, 200)),
+                    };
+                });
+                }
+
+                app.http(functionName, {
+                methods: ['GET'],
+                authLevel: 'function',
+                route: 'parameters/{key}',
+                handler: handler,
+                });
+
+            ```
+    
+
+## 6 Guía de configuración y pruebas
+Para correr de forma local las funciones declaradas se debe tener lo siguiente.
+**Instalar Azure Functions Core Tools:**
+  ```sh
+    npm install -g azure-functions-core-tools@4 --unsafe-perm true
+  ```
+En el archivo **package.json** se encuentran declaradas las librerías necesarias para el correcto funcionamiento de la aplicación. Dado que este arquetipo incluye funciones REST utilizando Express, puedes decidir descartarlo si no es necesario en tu caso de uso.
+
+Para ejecutar y probar los tests unitarios correspondientes a los casos de uso, utiliza el siguiente comando:
+```sh
+    npm run start:function
+```
+ 
+
 
 # Build and Test
 npm run build --Generate Application To Production
