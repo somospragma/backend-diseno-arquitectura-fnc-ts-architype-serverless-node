@@ -599,7 +599,6 @@ Esta guía proporciona una descripción detallada de la Arquitectura Hexagonal i
         * **Ejemplo de Implementación en el Arquetipo:**
 
         ```typescript
-
                 // Nombre dinámico de la función
                 const functionName = `NOVA-${process.env.VALIDATION_TYPE}-${process.env.FUNCTION_NAME_OBTAIN_PARAMETER}-${process.env.ENVIRONMENT}-${process.env.REGION}`;
 
@@ -641,7 +640,6 @@ Esta guía proporciona una descripción detallada de la Arquitectura Hexagonal i
                 route: 'parameters/{key}',
                 handler: handler,
                 });
-
         ```
     
 
