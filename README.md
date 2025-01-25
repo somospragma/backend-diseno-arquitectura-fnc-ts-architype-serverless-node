@@ -598,7 +598,7 @@ Esta guía proporciona una descripción detallada de la Arquitectura Hexagonal i
       * **`ObtainParameterFunction.ts`**
         * **Ejemplo de Implementación en el Arquetipo:**
 
-            ```typescript
+        ```typescript
 
                 // Nombre dinámico de la función
                 const functionName = `NOVA-${process.env.VALIDATION_TYPE}-${process.env.FUNCTION_NAME_OBTAIN_PARAMETER}-${process.env.ENVIRONMENT}-${process.env.REGION}`;
@@ -642,7 +642,7 @@ Esta guía proporciona una descripción detallada de la Arquitectura Hexagonal i
                 handler: handler,
                 });
 
-            ```
+        ```
     
 
 ## 6 Guía de configuración y pruebas
