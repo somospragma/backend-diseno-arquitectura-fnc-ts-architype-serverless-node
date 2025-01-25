@@ -657,15 +657,4 @@ Para ejecutar y probar los tests unitarios correspondientes a los casos de uso, 
 ```sh
     npm run start:function
 ```
- 
-
-
-# Build and Test
-npm run build --Generate Application To Production
-npm start Run Application in Production mode
-npm run dev -- Run Application in dev mode
-
-
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
 
