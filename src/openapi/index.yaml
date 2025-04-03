@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: "mercantil-node-arquetipo"
+  title: "pragma-node-arquetipo"
   version: "1.0"
 paths:
   /parameters/{key}:

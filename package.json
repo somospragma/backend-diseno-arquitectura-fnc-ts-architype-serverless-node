@@ -1,5 +1,5 @@
 {
-    "name": "mercantil-hexagonal-archetype-node",
+    "name": "pragma-hexagonal-archetype-node",
     "version": "1.0.0",
     "description": "Arquetipo base para proyectos en Node utilizando Arquitectura Hexagonal con ORM",
     "main": "dist/{index.js,functions/*.js}",

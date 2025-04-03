@@ -10,9 +10,9 @@
     "resolveJsonModule": true, // Permite trabajar con archivos JSON en TypeScript
     "baseUrl": "./",
     "paths": {
-      "@userManagement/*": ["src/mercantil/arquetipo/userManagement/*"],
-      "@parameterManagement/*": ["src/mercantil/arquetipo/parameterManagement/*"],
-      "@crosscutting/*": ["src/mercantil/arquetipo/crosscutting/*"]
+      "@userManagement/*": ["src/pragma/arquetipo/userManagement/*"],
+      "@parameterManagement/*": ["src/pragma/arquetipo/parameterManagement/*"],
+      "@crosscutting/*": ["src/pragma/arquetipo/crosscutting/*"]
     },
     "outDir": "./dist",
     "rootDir": "./src",

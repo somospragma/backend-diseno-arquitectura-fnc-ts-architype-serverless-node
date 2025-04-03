@@ -21,7 +21,7 @@ La Arquitectura Hexagonal (también conocida como Arquitectura de Puertos y Adap
     📦src
     ┣ 📂functions
     ┃ ┗ 📜ObtainParameterFunction.ts
-    ┣ 📂mercantil
+    ┣ 📂pragma
     ┃ ┗ 📂arquetipo
     ┃ ┃ ┣ 📂crosscutting
     ┃ ┃ ┃ ┣ 📂configuration
@@ -153,7 +153,7 @@ El Patrón Servicio define una capa de servicios que encapsula la lógica de neg
 
 * **Aplicación en el Arquetipo:**
     * **Servicios de Dominio:**
-        **`ParameterService.ts`** en **`mercantil/arquetipo/parameterManagement/domain/services`**
+        **`ParameterService.ts`** en **`pragma/arquetipo/parameterManagement/domain/services`**
 
     * **Casos de Uso en la Capa de Aplicación:**
         **`GetParameterUseCase.ts`**
@@ -320,7 +320,7 @@ Esta guía proporciona una descripción detallada de la Arquitectura Hexagonal i
 
 **Propósito:** contiene la lógica de negocio pura y las reglas que gobiernan el comportamiento de la aplicación. Esta capa es independiente de frameworks y detalles de implementación externos. Aquí se modelan las entidades de negocio (ahora llamadas **modelos**), eventos y puertos que permiten una interacción desacoplada con la infraestructura.
 
-**Ubicación:**  **`src\mercantil\arquetipo\userManagement\domain`**
+**Ubicación:**  **`src\pragma\arquetipo\userManagement\domain`**
 
 **Componentes Principales:**
 * **Modelos (**`models`**):**
@@ -417,7 +417,7 @@ Esta guía proporciona una descripción detallada de la Arquitectura Hexagonal i
 
 **Propósito:** orquesta los casos de uso de la aplicación, coordinando la interacción entre la capa de dominio y el mundo exterior. No contiene lógica de negocio, sino que se encarga de los flujos y procesos. Esta capa recibe las peticiones de la infraestructura (por ejemplo, a través de controladores), las valida, invoca la capa de dominio y devuelve resultados adecuados.
 
-**Ubicación:** **`src\mercantil\arquetipo\userManagement\application`**
+**Ubicación:** **`src\pragma\arquetipo\userManagement\application`**
 
 **Componentes Principales:**
 * **Casos de Uso (**`usecases`**):**
@@ -500,7 +500,7 @@ Esta guía proporciona una descripción detallada de la Arquitectura Hexagonal i
 
 **Propósito:** implementa los detalles técnicos y proporciona las herramientas necesarias para que la aplicación funcione. Esto incluye controladores, proveedores de datos, clientes REST, entre otros. La infraestructura cumple con los contratos definidos por el dominio (puertos out) proveyendo implementaciones concretas.
 
-**Ubicación:** **`src\mercantil\arquetipo\userManagement\infrastructure`**
+**Ubicación:** **`src\pragma\arquetipo\userManagement\infrastructure`**
 
 **Componentes Principales:**
 * **Controladores (**`controllers`**):**
@@ -555,13 +555,13 @@ Esta guía proporciona una descripción detallada de la Arquitectura Hexagonal i
 
 * **Cliente Rest (**`restclients`**):**
     * Proveen funcionalidades para consumir sistemas externos.
-        > **Nota:** para más detalle visitar en el arquetipo la implementación de esta clase en la siguiente ruta: **`src\mercantil\arquetipo\userManagement\infrastructure\dataProviders\restClients`**
+        > **Nota:** para más detalle visitar en el arquetipo la implementación de esta clase en la siguiente ruta: **`src\pragma\arquetipo\userManagement\infrastructure\dataProviders\restClients`**
 
 #### 5.1.4. Capas Transversales (Crosscutting)
 
 **Propósito:** contienen funcionalidades que son transversales a todas las capas, como manejo de excepciones, logging, internacionalización de mensajes,configuración global, constantes, http, utilitatios, entre otros. Esta capa ofrece servicios compartidos que no pertenecen a la lógica de negocio ni a la infraestructura específica.
 
-**Ubicación:** **`src\mercantil\arquetipo\crosscutting`**
+**Ubicación:** **`src\pragma\arquetipo\crosscutting`**
 **Componentes Principales:**
 * **configutarion (**`AppConfig`**):**
     * Manejan configuraciones de conexiones globales, ya sea base de datos o conexiones a Redis, entre otros, permite tener generalizadas estas funcionalidades y extenderlos a las capas que se requieran
@@ -654,5 +654,6 @@ En el archivo **package.json** se encuentran declaradas las librerías necesaria
 Para ejecutar y probar los tests unitarios correspondientes a los casos de uso, utiliza el siguiente comando:
 ```sh
     npm run start:function
+    npm run start:rest
 ```
 

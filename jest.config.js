@@ -3,8 +3,8 @@ module.exports = {
     testEnvironment: 'node',
     roots: ['<rootDir>/tests'],
     moduleNameMapper: {
-      '^@parameterManagement/(.*)$': '<rootDir>/src/mercantil/arquetipo/parameterManagement/$1',
-      '^@userManagement/(.*)$': '<rootDir>/src/mercantil/arquetipo/userManagement/$1',
-      '^@crosscutting/(.*)$': '<rootDir>/src/mercantil/arquetipo/crosscutting/$1',
+      '^@parameterManagement/(.*)$': '<rootDir>/src/pragma/arquetipo/parameterManagement/$1',
+      '^@userManagement/(.*)$': '<rootDir>/src/pragma/arquetipo/userManagement/$1',
+      '^@crosscutting/(.*)$': '<rootDir>/src/pragma/arquetipo/crosscutting/$1',
     },
   };
