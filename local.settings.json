@@ -8,6 +8,9 @@
     "FUNCTION_NAME_OBTAIN_PARAMETER": "ObtainParameterFunction",
     "FUNCTION_CREATE_USER": "CreateUserFunction",
     "ENVIRONMENT": "Dev",
-    "REGION": "US"
+    "REGION": "US",
+    "SECRET_TOKEN_ELASTIC": "TOKEN_APM_ELASTIC",
+    "SERVER_URL_ELASTIC": "URL_APM_ELASTIC",
+    "ELASTIC_ENVIROMENT": "dev"
   }
 }
