@@ -18,7 +18,7 @@ async function handler(
 ): Promise<HttpResponseInit> {
   context.log(`Executing Azure Function: ${functionName}`);
 
-  return handleFunctionErrors(context, async () => {
+  return handleFunctionErrors(context, req, async () => {
     const transactionId = req.headers.get('transactionId');
     const redisClient = createRedisClient();
     const key = req.params.key;

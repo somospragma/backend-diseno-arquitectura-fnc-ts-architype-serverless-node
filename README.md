@@ -657,3 +657,84 @@ Para ejecutar y probar los tests unitarios correspondientes a los casos de uso, 
     npm run start:rest
 ```
 
+
+
+## 7. Guía de Cliente APM (Elastic APM)
+
+### 📦 Instalar dependencia
+
+```sh
+npm install elastic-apm-node
+```
+
+---
+
+### ⚙️ Definir archivo de configuración de Elastic APM
+
+```ts
+// src/apm.ts
+import { Constants } from '@crosscutting/utils/Constants';
+import apm from 'elastic-apm-node';
+
+apm.start({
+  serviceName: process.env.FUNCTION_NAME || Constants.PRAGMA,
+  secretToken: process.env.SECRET_TOKEN_ELASTIC,
+  serverUrl: process.env.SERVER_URL_ELASTIC,
+  environment: process.env.ELASTIC_ENVIROMENT,
+  active: true,
+});
+
+export default apm;
+```
+
+---
+
+### ▶️ Configuración local
+
+#### 🔷 Para el caso de Azure Functions
+
+Agrega las siguientes variables en el archivo `local.settings.json`:
+
+```json
+{
+  "Values": {
+    "SECRET_TOKEN_ELASTIC": "TOKEN_APM_ELASTIC",
+    "SERVER_URL_ELASTIC": "URL_APM_ELASTIC",
+    "ELASTIC_ENVIROMENT": "dev"
+  }
+}
+```
+
+> Estas variables definen los entornos necesarios para que funcione correctamente el agente de Elastic APM.
+
+Además, asegúrate de manejar los errores correctamente desde el controlador o helper que centraliza las respuestas exitosas y errores.
+
+📄 **Ruta del archivo relevante**:
+
+```
+src/pragma/arquetipo/crosscutting/helpers/handleFunctionErrors.ts
+```
+
+---
+
+#### 🔷 Para el caso de aplicaciones REST
+
+Define las siguientes variables de entorno en tu archivo `.env` o directamente en el entorno de ejecución:
+
+```sh
+SECRET_TOKEN_ELASTIC=TOKEN_APM_ELASTIC
+SERVER_URL_ELASTIC=URL_APM_ELASTIC
+ELASTIC_ENVIROMENT=dev
+```
+
+En el archivo principal (`index.ts` o `main.ts`) importa la configuración de APM e integra el middleware:
+
+```ts
+import './apm';
+import apm from 'elastic-apm-node';
+
+// Inicializar el cliente del middleware de Elastic APM
+appRouter.use(apm.middleware.connect());
+```
+
+> Esto permitirá capturar automáticamente las transacciones y errores mediante Elastic APM.

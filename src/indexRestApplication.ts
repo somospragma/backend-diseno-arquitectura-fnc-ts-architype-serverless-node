@@ -1,13 +1,14 @@
+import './apm';
 import 'reflect-metadata';
 import express from 'express';
 import { AppDataSource } from '@crosscutting/configuration/AppConfig';
 import { UserController } from '@userManagement/infrastructure/controllers/UserController';
 import { createRedisClient } from '@crosscutting/configuration/AppConfig';
 import { ParameterController } from '@parameterManagement/infrastructure/controllers/ParameterController';
+import apm from 'elastic-apm-node';
 
 const appRouter = express();
 appRouter.use(express.json());
-
 
 
 //Inicializa el cliente Redis
@@ -17,6 +18,9 @@ const redisClient = createRedisClient();
 AppDataSource.initialize()
   .then(() => {
     console.log('Data Source has been initialized!');
+
+    //Registrar cliente apm
+    appRouter.use(apm.middleware.connect());
 
     // Registrar rutas
     appRouter.use('/api', UserController, ParameterController(redisClient));

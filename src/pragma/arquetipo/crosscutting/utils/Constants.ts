@@ -1,4 +1,6 @@
 export class Constants {
+    static readonly PRAGMA = "IDENTIFICADOR_PROYECTO"
+    static readonly TRANSACTION_ID = "TransactionId";
     static readonly ERROR = "ERROR";
     static readonly SUCCESS = "SUCCESS";
     static readonly UNEXPECTED_ERROR = "Ha ocurrido un error inesperado";
